@@ -23,11 +23,14 @@ Salesforce remains authoritative throughout the flow. The current Account Intell
 
 ![SBC High-Level Architecture](docs/images/sbc-high-level-architecture.svg)
 
-**High-level architecture of the implemented Account Intelligence capability.** Salesforce remains the system of record and security boundary throughout the request lifecycle. GPT-5.6 is invoked only as a stateless reasoning engine over a bounded, sanitized CRM context. All validation, evidence verification, and presentation occur inside Salesforce, and Account Intelligence generation performs zero Salesforce DML.
+**High-level architecture of the implemented Account Intelligence capability.** Salesforce remains the system of record and the trusted security boundary throughout the request lifecycle. GPT-5.6 is invoked only as a stateless reasoning engine over a bounded, sanitized CRM context.
 
-For the detailed implementation architecture, see:
+All CRM access, validation, evidence verification, and presentation remain inside Salesforce. GPT-5.6 performs reasoning only, and Account Intelligence generation performs zero Salesforce DML.
 
-`docs/images/sbc-account-intelligence-architecture.svg`
+For readers interested in the implementation details:
+
+- [Detailed Account Intelligence Architecture](docs/images/sbc-account-intelligence-architecture.svg)
+- Mermaid source: `docs/architecture/sbc-account-intelligence-architecture.mmd`
 
 Responsibilities remain explicit:
 
