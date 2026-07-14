@@ -262,19 +262,27 @@ See the [GitHub release](https://github.com/ishanovarazmyrat-code/sbc/releases/t
 
 ### Overview
 
-> TODO: Add an Account record-page overview screenshot.
+![Account Intelligence Overview](docs/images/account-intelligence-overview.png)
+
+Account record page showing the Capability Catalog, Trusted CRM Context Snapshot, and the entry point for Account Intelligence generation.
 
 ### Loading
 
-> TODO: Add a loading-state screenshot.
+![Account Intelligence Loading](docs/images/account-intelligence-loading.png)
+
+Loading state displayed while Salesforce validates the grounded CRM context, invokes GPT-5.6, and prepares a validated Account Intelligence response.
 
 ### Generated Intelligence
 
-> TODO: Add a generated Account Intelligence screenshot.
+![Generated Account Intelligence](docs/images/account-intelligence-generated.png)
+
+Generated Account Intelligence showing the executive summary, health score, grounded business insights, recommended actions, and evidence-backed recommendations produced from trusted Salesforce CRM context.
 
 ### Evidence Expansion
 
-> TODO: Add an expanded evidence-card screenshot.
+![Evidence Expansion](docs/images/account-intelligence-evidence.png)
+
+Expanded evidence references showing the underlying Salesforce Opportunity and Case records that support the generated analysis. Every AI conclusion is backed by trusted CRM evidence and can be inspected directly from the Lightning experience.
 
 ## Design Principles
 
