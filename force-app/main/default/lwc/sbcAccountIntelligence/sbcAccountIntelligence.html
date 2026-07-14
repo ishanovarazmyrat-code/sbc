@@ -1,0 +1,220 @@
+<template>
+  <lightning-card
+    title="SBC — Account Intelligence"
+    icon-name="standard:account"
+  >
+    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+      <section aria-labelledby="catalog-heading">
+        <h2 id="catalog-heading" class="section-heading">Capability Catalog</h2>
+        <div class="catalog">
+          <article class="capability capability_active" aria-current="true">
+            <div>
+              <h3>Account Intelligence</h3>
+              <p>Grounded customer health, risks, and opportunities</p>
+            </div>
+            <span class="status status_available">Available • Selected</span>
+          </article>
+          <article class="capability capability_disabled" aria-disabled="true">
+            <div>
+              <h3>Customer Recommendation</h3>
+              <p>Next-best customer recommendations</p>
+            </div>
+            <span class="status">Planned</span>
+          </article>
+          <article class="capability capability_disabled" aria-disabled="true">
+            <div>
+              <h3>Executive Customer Briefing</h3>
+              <p>Executive-ready customer briefings</p>
+            </div>
+            <span class="status">Planned</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="context-panel" aria-labelledby="context-heading">
+        <div class="section-title-row">
+          <h2 id="context-heading" class="section-heading">
+            Trusted CRM Context Snapshot
+          </h2>
+          <span class="trusted-label">Salesforce CRM Facts</span>
+        </div>
+        <template lwc:if={hasMissingRecordId}>
+          <p class="state-message">
+            Open this component on an Account record to continue.
+          </p>
+        </template>
+        <template lwc:elseif={showPermissionError}>
+          <p class="state-message" role="alert">
+            You do not have access to generate intelligence for this Account.
+          </p>
+        </template>
+        <template lwc:elseif={showContextError}>
+          <p class="state-message" role="alert">
+            We could not load trusted Salesforce context for this Account.
+          </p>
+        </template>
+        <template lwc:elseif={hasContext}>
+          <dl class="context-grid">
+            <div>
+              <dt>Account Name</dt>
+              <dd>{context.accountName}</dd>
+            </div>
+            <div>
+              <dt>Industry</dt>
+              <dd>{context.industry}</dd>
+            </div>
+            <div>
+              <dt>Open Opportunities</dt>
+              <dd>{context.openOpportunityCount}</dd>
+            </div>
+            <div>
+              <dt>Open Opportunity Value</dt>
+              <dd>{formattedOpportunityValue}</dd>
+            </div>
+            <div>
+              <dt>Open Cases</dt>
+              <dd>{context.openCaseCount}</dd>
+            </div>
+            <div>
+              <dt>High-priority Case</dt>
+              <dd>{priorityCaseLabel}</dd>
+            </div>
+            <div>
+              <dt>Contacts</dt>
+              <dd>{context.contactCount}</dd>
+            </div>
+            <div>
+              <dt>Open Tasks</dt>
+              <dd>{context.openTaskCount}</dd>
+            </div>
+          </dl>
+        </template>
+        <lightning-button
+          class="generate-button"
+          variant="brand"
+          label="Generate Intelligence"
+          disabled={isGenerateDisabled}
+          onclick={handleGenerate}
+        ></lightning-button>
+      </section>
+
+      <template lwc:if={isLoading}>
+        <section class="loading-panel" aria-labelledby="loading-heading">
+          <h2 id="loading-heading" class="section-heading">
+            Building Account Intelligence
+          </h2>
+          <div class="loading-row">
+            <lightning-spinner
+              alternative-text="Generating Account Intelligence"
+              size="small"
+            ></lightning-spinner>
+            <p aria-live="polite" aria-atomic="true">{loadingStatus}</p>
+          </div>
+          <div class="skeleton" aria-hidden="true"></div>
+          <div class="skeleton skeleton_short" aria-hidden="true"></div>
+        </section>
+      </template>
+
+      <template lwc:if={showServiceError}>
+        <section class="error-panel" role="alert">
+          <h2 class="section-heading">Account Intelligence unavailable</h2>
+          <p>We could not generate intelligence right now.</p>
+          <lightning-button
+            label="Try Again"
+            onclick={handleTryAgain}
+          ></lightning-button>
+        </section>
+      </template>
+
+      <template lwc:if={result}>
+        <section class="results" aria-labelledby="results-heading">
+          <p class="ai-notice">
+            AI-generated analysis based on trusted Salesforce data. Verify
+            before acting.
+          </p>
+          <article class="summary-card">
+            <h2 id="results-heading">Executive Summary</h2>
+            <p>{result.executiveSummary}</p>
+          </article>
+          <article class="score-card">
+            <div>
+              <h2>Account Health Score</h2>
+              <p class="score-number">{result.score}<span>/100</span></p>
+              <p class="score-label">{result.statusText}</p>
+            </div>
+            <div
+              class="score-track"
+              role="progressbar"
+              aria-label="Account health score"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow={result.score}
+            >
+              <div class="score-fill" style={result.scoreStyle}></div>
+            </div>
+          </article>
+          <div class="conclusion-list">
+            <template for:each={result.conclusions} for:item="item">
+              <article class="conclusion" key={item.key}>
+                <div class="conclusion-heading">
+                  <template lwc:if={item.sectionTitle}
+                    ><h2>{item.sectionTitle}</h2></template
+                  >
+                  <template lwc:if={item.label}
+                    ><span class="status">{item.label}</span></template
+                  >
+                </div>
+                <template lwc:if={item.itemTitle}
+                  ><h3 class="item-title">{item.itemTitle}</h3></template
+                >
+                <p>{item.body}</p>
+                <div
+                  class="evidence-chips"
+                  aria-label="Supporting Salesforce evidence"
+                >
+                  <template for:each={item.evidence} for:item="evidence">
+                    <button
+                      key={evidence.evidenceId}
+                      class="evidence-chip"
+                      type="button"
+                      data-section={item.key}
+                      data-id={evidence.evidenceId}
+                      aria-label={evidence.ariaLabel}
+                      aria-expanded={evidence.ariaExpanded}
+                      onclick={handleEvidenceToggle}
+                    >
+                      {evidence.evidenceId}
+                    </button>
+                  </template>
+                </div>
+                <template lwc:if={item.expandedEvidence}>
+                  <div
+                    class="evidence-card"
+                    role="region"
+                    aria-label="Expanded Salesforce evidence"
+                  >
+                    <p class="evidence-type">
+                      {item.expandedEvidence.sourceType}
+                    </p>
+                    <h3>{item.expandedEvidence.displayLabel}</h3>
+                    <p>{item.expandedEvidence.factSummary}</p>
+                    <template lwc:if={item.expandedEvidence.recordId}>
+                      <button
+                        class="record-link"
+                        type="button"
+                        data-record-id={item.expandedEvidence.recordId}
+                        onclick={handleRecordNavigation}
+                      >
+                        Open Salesforce record
+                      </button>
+                    </template>
+                  </div>
+                </template>
+              </article>
+            </template>
+          </div>
+        </section>
+      </template>
+    </div>
+  </lightning-card>
+</template>

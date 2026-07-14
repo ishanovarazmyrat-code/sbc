@@ -1,0 +1,242 @@
+:host {
+  display: block;
+}
+.section-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #181818;
+}
+.catalog {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.capability {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 0.35rem;
+  padding: 0.85rem;
+  background: #fff;
+}
+.capability h3 {
+  font-weight: 700;
+}
+.capability p {
+  color: #444;
+  margin-top: 0.2rem;
+}
+.capability_active {
+  border: 2px solid #0176d3;
+  background: #eef4ff;
+}
+.capability_disabled {
+  background: #f3f3f3;
+  color: #5c5c5c;
+}
+.status {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 1rem;
+  background: #e5e5e5;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.status_available {
+  background: #d8edff;
+  color: #014486;
+}
+.context-panel,
+.loading-panel,
+.error-panel,
+.results {
+  margin-top: 1rem;
+  border-top: 1px solid #e5e5e5;
+  padding-top: 1rem;
+}
+.section-title-row,
+.conclusion-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+.trusted-label {
+  color: #2e844a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #ebf7e6;
+  border-radius: 1rem;
+  padding: 0.15rem 0.5rem;
+}
+.context-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.context-grid div {
+  border-left: 3px solid #1b96ff;
+  padding-left: 0.65rem;
+  min-width: 0;
+}
+.context-grid dt {
+  color: #5c5c5c;
+  font-size: 0.75rem;
+}
+.context-grid dd {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.generate-button {
+  display: inline-block;
+  margin-top: 1rem;
+}
+.state-message {
+  margin: 0.75rem 0;
+  color: #444;
+}
+.loading-row {
+  position: relative;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  padding-left: 3rem;
+  margin-top: 0.5rem;
+}
+.skeleton {
+  height: 0.8rem;
+  border-radius: 0.25rem;
+  background: #e5e5e5;
+  margin-top: 0.65rem;
+  width: 100%;
+}
+.skeleton_short {
+  width: 70%;
+}
+.ai-notice {
+  padding: 0.65rem;
+  border-left: 3px solid #9050e9;
+  background: #f6f2fb;
+}
+.summary-card {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.35rem;
+  background: #f3f3f3;
+}
+.summary-card h2,
+.score-card h2,
+.conclusion h2 {
+  font-weight: 700;
+}
+.summary-card p {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.score-card {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 0.35rem;
+}
+.score-number {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.score-number span {
+  font-size: 0.85rem;
+  color: #5c5c5c;
+}
+.score-label {
+  font-weight: 700;
+  margin-top: 0.35rem;
+}
+.score-track {
+  height: 0.8rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #e5e5e5;
+}
+.score-fill {
+  height: 100%;
+  background: #2e844a;
+}
+.conclusion-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.conclusion {
+  border: 1px solid #c9c9c9;
+  border-radius: 0.35rem;
+  padding: 1rem;
+}
+.conclusion > p {
+  margin-top: 0.4rem;
+}
+.item-title {
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+.evidence-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+.evidence-chip,
+.record-link {
+  border: 0;
+  color: #0176d3;
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+.evidence-chip {
+  border: 1px solid #0176d3;
+  border-radius: 1rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+.evidence-chip:focus-visible,
+.record-link:focus-visible {
+  outline: 2px solid #0176d3;
+  outline-offset: 2px;
+}
+.evidence-card {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-left: 3px solid #2e844a;
+  background: #f3f3f3;
+}
+.evidence-card h3 {
+  font-weight: 700;
+}
+.evidence-type {
+  color: #5c5c5c;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+@media (max-width: 48rem) {
+  .catalog,
+  .context-grid,
+  .conclusion-list {
+    grid-template-columns: 1fr;
+  }
+  .score-card {
+    grid-template-columns: 1fr;
+  }
+}
