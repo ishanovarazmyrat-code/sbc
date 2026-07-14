@@ -3,6 +3,7 @@ public with sharing class SBC_OpenAIClient {
     private static final String RESPONSES_PATH = '/v1/responses';
     private static final String MODEL = 'gpt-5.6';
     private static final Integer MAX_OUTPUT_TOKENS = 300;
+    private static final Integer MAX_INPUT_LENGTH = 20000;
     private static final Integer TIMEOUT_MILLISECONDS = 30000;
     private static final String SYNTHETIC_PROMPT =
         'Return a structured readiness assessment for the SBC Build Week connectivity test.';
@@ -18,6 +19,11 @@ public with sharing class SBC_OpenAIClient {
         public String status;
         public String summary;
         public String model;
+    }
+
+    public class StructuredResponse {
+        public String model;
+        public String outputText;
     }
 
     public class OpenAIClientException extends Exception {
@@ -45,6 +51,82 @@ public with sharing class SBC_OpenAIClient {
         }
 
         return parseResponse(response.getBody());
+    }
+
+    public static StructuredResponse sendStructuredRequest(
+        String model,
+        String input,
+        String schemaName,
+        Map<String, Object> schema,
+        Integer maxOutputTokens
+    ) {
+        if (
+            String.isBlank(model) ||
+            String.isBlank(input) ||
+            input.length() > MAX_INPUT_LENGTH ||
+            String.isBlank(schemaName) ||
+            schema == null ||
+            maxOutputTokens == null ||
+            maxOutputTokens <= 0
+        ) {
+            throw new OpenAIClientException('OpenAI structured request is invalid.');
+        }
+
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(NAMED_CREDENTIAL + RESPONSES_PATH);
+        request.setMethod('POST');
+        request.setHeader('Content-Type', 'application/json');
+        request.setTimeout(TIMEOUT_MILLISECONDS);
+        request.setBody(
+            JSON.serialize(
+                new Map<String, Object>{
+                    'model' => model,
+                    'input' => input,
+                    'max_output_tokens' => maxOutputTokens,
+                    'text' => new Map<String, Object>{
+                        'format' => new Map<String, Object>{
+                            'type' => 'json_schema',
+                            'name' => schemaName,
+                            'strict' => true,
+                            'schema' => schema
+                        }
+                    }
+                }
+            )
+        );
+
+        HttpResponse response;
+        try {
+            response = new Http().send(request);
+        } catch (CalloutException exceptionValue) {
+            throw new OpenAIClientException('OpenAI callout failed.');
+        }
+
+        if (response.getStatusCode() < 200 || response.getStatusCode() >= 300) {
+            throw new OpenAIClientException(
+                'OpenAI request failed with HTTP status ' + response.getStatusCode() + '.'
+            );
+        }
+
+        try {
+            Map<String, Object> root = (Map<String, Object>) JSON.deserializeUntyped(
+                response.getBody()
+            );
+            String apiModel = (String) root.get('model');
+            String outputText = findOutputText((List<Object>) root.get('output'));
+            if (String.isBlank(apiModel) || !apiModel.startsWith(model)) {
+                throw new OpenAIClientException('OpenAI response validation failed.');
+            }
+
+            StructuredResponse result = new StructuredResponse();
+            result.model = apiModel;
+            result.outputText = outputText;
+            return result;
+        } catch (OpenAIClientException exceptionValue) {
+            throw exceptionValue;
+        } catch (Exception exceptionValue) {
+            throw new OpenAIClientException('OpenAI response validation failed.');
+        }
     }
 
     private static ReadinessRequest buildRequest() {

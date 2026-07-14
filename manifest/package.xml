@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>SBC_AccountIntelligenceContextService</members>
+        <members>SBC_AIContextServiceTest</members>
+        <members>SBC_AccountIntelligenceController</members>
+        <members>SBC_AccountIntelligenceControllerTest</members>
+        <members>SBC_AccountIntelligencePresentation</members>
+        <members>SBC_AccountIntelligenceService</members>
         <members>SBC_CapabilityRegistry</members>
         <members>SBC_CapabilityRegistryTest</members>
+        <members>SBC_OpenAIClient</members>
+        <members>SBC_OpenAIClientTest</members>
         <name>ApexClass</name>
     </types>
     <types>
