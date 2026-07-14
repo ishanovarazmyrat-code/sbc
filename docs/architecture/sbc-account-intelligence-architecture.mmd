@@ -1,0 +1,51 @@
+flowchart TB
+  subgraph SF["Salesforce — System of Record and Security Boundary"]
+    direction TB
+
+    REG["Capability Registry<br/>Descriptive metadata only<br/>Account Intelligence — Available<br/>Customer Recommendation — Planned<br/>Executive Customer Briefing — Planned"]:::registry
+
+    subgraph INT["Salesforce Interaction"]
+      direction LR
+      ARP["Account Record Page"]:::sf
+      LWC["SBC Account Intelligence LWC<br/>Capability Catalog · Trusted CRM Context<br/>Generate Intelligence · Evidence Inspection"]:::sf
+      APEX["Apex Controller<br/>with sharing · thin orchestration<br/>no business logic · no DML"]:::sf
+      ARP --> LWC --> APEX
+    end
+
+    subgraph GRP["Grounded Request Path"]
+      direction LR
+      CRM["Salesforce CRM Data<br/>Account · Opportunity · Case · Contact · Task"]:::sf
+      CTX["Context Service<br/>WITH USER_MODE queries<br/>Deterministic evidence IDs"]:::sf
+      AIS["Intelligence Service<br/>GPT-5.6 instructions<br/>Strict JSON schema"]:::sf
+      OAC["OpenAI Client<br/>Named Credential<br/>120-second timeout"]:::sf
+      CRM --> CTX --> AIS --> OAC
+    end
+
+    subgraph VRP["Validated Return Path"]
+      direction LR
+      EV["Evidence Validation<br/>Rejects unknown evidence IDs"]:::sf
+      PL["Presentation Layer<br/>Sanitized DTO<br/>Allow-listed evidence"]:::sf
+      RES["LWC Result Rendering<br/>Evidence inspection<br/>Salesforce record navigation"]:::sf
+      EV --> PL --> RES
+    end
+
+    REG -. "Informational only — no dynamic dispatch" .-> LWC
+    APEX --> CTX
+    OAC --> EV
+
+    G1["Salesforce is the system of record.<br/>GPT-5.6 performs reasoning only."]:::gov
+    G2["Account Intelligence generation<br/>performs zero Salesforce DML."]:::gov
+  end
+
+  subgraph OAI["OpenAI — External reasoning boundary"]
+    direction TB
+    GPT["Responses API — GPT-5.6<br/>Reasoning only · Structured output<br/>Low reasoning effort · Low verbosity<br/>Requested alias: gpt-5.6"]:::oai
+  end
+
+  OAC -- "Sanitized evidence + strict schema" --> GPT
+  GPT -- "Strict structured JSON" --> OAC
+
+  classDef sf fill:#FFFFFF,stroke:#185FA5,color:#042C53
+  classDef oai fill:#FFFFFF,stroke:#0F6E56,color:#04342C
+  classDef registry fill:#F5F4EF,stroke:#888780,stroke-dasharray: 6 4,color:#2C2C2A
+  classDef gov fill:#FAEEDA,stroke:#BA7517,color:#412402

@@ -1,0 +1,73 @@
+<svg width="680" height="1120" viewBox="0 0 680 1120" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<title>SBC v0.5.0 architecture diagram</title>
+<desc>Implemented flow from Salesforce Account record page through Apex services to OpenAI GPT-5.6 and back to LWC result rendering with evidence inspection.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<rect width="680" height="1120" fill="#FFFFFF"/>
+
+<!-- 1 Account record page (gray) -->
+<rect x="190" y="40" width="300" height="56" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="340" y="62" text-anchor="middle" font-size="14" font-weight="600" fill="#2C2C2A">Account record page</text>
+<text x="340" y="80" text-anchor="middle" font-size="12" fill="#444441">Salesforce UI entry point</text>
+<line x1="340" y1="96" x2="340" y2="156" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 2 LWC (purple) -->
+<rect x="190" y="156" width="300" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text x="340" y="178" text-anchor="middle" font-size="14" font-weight="600" fill="#26215C">Account Intelligence LWC</text>
+<text x="340" y="196" text-anchor="middle" font-size="12" fill="#3C3489">Presentation layer</text>
+<line x1="340" y1="212" x2="340" y2="272" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 3 Apex controller (teal) -->
+<rect x="190" y="272" width="300" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="340" y="294" text-anchor="middle" font-size="14" font-weight="600" fill="#04342C">Apex controller</text>
+<text x="340" y="312" text-anchor="middle" font-size="12" fill="#085041">Thin orchestration only</text>
+<line x1="340" y1="328" x2="340" y2="388" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 4 Context and intelligence services (teal) -->
+<rect x="190" y="388" width="300" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="340" y="410" text-anchor="middle" font-size="14" font-weight="600" fill="#04342C">Context and intelligence services</text>
+<text x="340" y="428" text-anchor="middle" font-size="12" fill="#085041">Builds bounded CRM context</text>
+<line x1="340" y1="444" x2="340" y2="504" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 5 OpenAI client (teal) -->
+<rect x="190" y="504" width="300" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="340" y="526" text-anchor="middle" font-size="14" font-weight="600" fill="#04342C">OpenAI client</text>
+<text x="340" y="544" text-anchor="middle" font-size="12" fill="#085041">Transport via Named Credential</text>
+<line x1="340" y1="560" x2="340" y2="620" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 6 OpenAI Responses API (coral, external) -->
+<rect x="190" y="620" width="300" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="340" y="642" text-anchor="middle" font-size="14" font-weight="600" fill="#4A1B0C">OpenAI Responses API</text>
+<text x="340" y="660" text-anchor="middle" font-size="12" fill="#712B13">GPT-5.6, reasoning only</text>
+<line x1="340" y1="676" x2="340" y2="736" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 7 Parsing and evidence validation (teal) -->
+<rect x="190" y="736" width="300" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="340" y="758" text-anchor="middle" font-size="14" font-weight="600" fill="#04342C">Parsing and evidence validation</text>
+<text x="340" y="776" text-anchor="middle" font-size="12" fill="#085041">Rejects unknown evidence IDs</text>
+<line x1="340" y1="792" x2="340" y2="852" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 8 Presentation DTO (purple) -->
+<rect x="190" y="852" width="300" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text x="340" y="874" text-anchor="middle" font-size="14" font-weight="600" fill="#26215C">Presentation DTO</text>
+<text x="340" y="892" text-anchor="middle" font-size="12" fill="#3C3489">Result and evidence catalog</text>
+<line x1="340" y1="908" x2="340" y2="968" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- 9 LWC result rendering (purple) -->
+<rect x="190" y="968" width="300" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text x="340" y="990" text-anchor="middle" font-size="14" font-weight="600" fill="#26215C">LWC result rendering</text>
+<text x="340" y="1008" text-anchor="middle" font-size="12" fill="#3C3489">Evidence inspection, record links</text>
+
+<!-- Legend -->
+<circle cx="90" cy="1060" r="5" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="102" y="1064" font-size="12" fill="#444441">Salesforce UI</text>
+<circle cx="370" cy="1060" r="5" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="382" y="1064" font-size="12" fill="#444441">Apex / server</text>
+<circle cx="90" cy="1084" r="5" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="102" y="1088" font-size="12" fill="#444441">External (OpenAI)</text>
+<circle cx="370" cy="1084" r="5" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text x="382" y="1088" font-size="12" fill="#444441">Presentation / result</text>
+</svg>

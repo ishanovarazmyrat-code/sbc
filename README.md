@@ -19,6 +19,28 @@ SBC addresses this problem through business capabilities that collect a bounded 
 
 Salesforce remains authoritative throughout the flow. The current Account Intelligence capability performs no CRM writes and does not treat model output as source data.
 
+## Architecture
+
+![SBC High-Level Architecture](docs/images/sbc-high-level-architecture.svg)
+
+**High-level architecture of the implemented Account Intelligence capability.** Salesforce remains the system of record and security boundary throughout the request lifecycle. GPT-5.6 is invoked only as a stateless reasoning engine over a bounded, sanitized CRM context. All validation, evidence verification, and presentation occur inside Salesforce, and Account Intelligence generation performs zero Salesforce DML.
+
+For the detailed implementation architecture, see:
+
+`docs/images/sbc-account-intelligence-architecture.svg`
+
+Responsibilities remain explicit:
+
+- The context service performs bounded, deterministic, access-aware Salesforce queries.
+- The Account Intelligence service owns the reasoning instructions, schema, parsing, and evidence validation.
+- The OpenAI client owns HTTP transport, timeout handling, and sanitized transport errors.
+- The presentation layer maps internal evidence into an allow-listed UI response.
+- The LWC renders facts and AI analysis as visually distinct concepts.
+
+## Why SBC?
+
+Salesforce already contains valuable customer data, but converting trusted CRM evidence into consistent business decisions remains difficult. SBC keeps Salesforce authoritative and exposes only bounded, necessary context to GPT-5.6 for reasoning. The resulting intelligence is structured, evidence-backed, validated, and read-only; AI never becomes the system of record.
+
 ## Key Features
 
 ### Grounded AI
@@ -29,13 +51,13 @@ The model receives only context assembled from standard Salesforce objects. Inst
 
 The OpenAI Responses API is called with a strict JSON Schema. Apex deserializes the response into typed Account Intelligence DTOs and validates required sections before returning it to the UI.
 
-### Evidence-backed recommendations
-
-Customer health, churn risk, growth signals, business risks, and recommended actions include evidence references. Users can expand those references inline to inspect the supporting CRM facts.
-
 ### Trusted CRM Context Snapshot
 
 Before generation, the component presents a bounded, sanitized snapshot that includes account identity, industry, open opportunities, open cases, contacts, and open tasks. Sensitive free text and contact details are excluded from the presentation.
+
+### Evidence-backed recommendations
+
+Customer health, churn risk, growth signals, business risks, and recommended actions include evidence references. Users can expand those references inline to inspect the supporting CRM facts.
 
 ### Read-only architecture
 
@@ -64,38 +86,6 @@ Evidence cards use `NavigationMixin` to open the supporting Salesforce record wh
 ### Centralized OpenAI model configuration
 
 The Account Intelligence service owns the requested model and output budget. The current implementation requests `gpt-5.6`, uses low reasoning effort and low text verbosity, and preserves strict structured output. This configuration is code-based rather than an administrator-facing runtime setting.
-
-## Architecture
-
-SBC separates CRM access, AI reasoning, validation, presentation mapping, and UI rendering.
-
-```text
-Salesforce Account record page
-            ↓
-Lightning Web Component
-            ↓
-Apex Controller
-            ↓
-Account Intelligence Context and Service
-            ↓
-OpenAI Client via Named Credential
-            ↓
-OpenAI Responses API
-            ↓
-Strict structured JSON
-            ↓
-Apex validation and presentation layer
-            ↓
-LWC rendering and evidence inspection
-```
-
-Responsibilities remain explicit:
-
-- The context service performs bounded, deterministic, access-aware Salesforce queries.
-- The Account Intelligence service owns the reasoning instructions, schema, parsing, and evidence validation.
-- The OpenAI client owns HTTP transport, timeout handling, and sanitized transport errors.
-- The presentation layer maps internal evidence into an allow-listed UI response.
-- The LWC renders facts and AI analysis as visually distinct concepts.
 
 ## Account Intelligence Experience
 
@@ -135,6 +125,7 @@ The implementation applies several controls around model output:
 | CRM platform                  | Salesforce                                          |
 | Server-side application       | Apex                                                |
 | User interface                | Lightning Web Components and SLDS                   |
+| AI model                      | GPT-5.6                                             |
 | AI integration                | OpenAI Responses API                                |
 | Response contract             | Strict Structured Outputs with JSON Schema          |
 | Authentication                | Salesforce Named Credential and External Credential |
@@ -224,6 +215,8 @@ Do not store API keys in source files. Authentication material belongs in Salesf
 
 ## Testing
 
+Testing emphasizes deterministic validation rather than relying on model behavior alone.
+
 The v0.5.0 implementation has been validated with:
 
 - **24/24 Apex tests** covering context construction, presentation mapping, structured parsing, evidence validation, HTTP failures, malformed responses, and registry behavior.
@@ -279,6 +272,13 @@ See the [GitHub release](https://github.com/ishanovarazmyrat-code/sbc/releases/t
 ### Evidence Expansion
 
 > TODO: Add an expanded evidence-card screenshot.
+
+## Design Principles
+
+- Salesforce is always the system of record.
+- AI performs reasoning, not data ownership.
+- Every conclusion is evidence-backed.
+- Intelligence generation is read-only and validated.
 
 ## License
 

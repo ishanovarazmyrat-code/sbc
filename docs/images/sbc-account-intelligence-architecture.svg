@@ -1,0 +1,131 @@
+<svg width="1400" height="1040" viewBox="0 0 1400 1040" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<title>SBC Account Intelligence architecture</title>
+<desc>Salesforce Account Intelligence architecture: Salesforce as system of record and security boundary, OpenAI GPT-5.6 as external, stateless reasoning boundary.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#42413D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<rect width="1400" height="1040" fill="#FFFFFF"/>
+
+<text x="540" y="44" text-anchor="middle" font-size="24" font-weight="700" fill="#0C2D4E">Salesforce — System of Record and Security Boundary</text>
+
+<rect x="40" y="78" width="1000" height="902" rx="14" fill="#FFFFFF" stroke="#185FA5" stroke-width="2"/>
+
+<rect x="390" y="110" width="300" height="126" rx="10" fill="#F5F4EF" stroke="#888780" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="540" y="134" text-anchor="middle" font-size="16" font-weight="700" fill="#2C2C2A">Capability Registry</text>
+<text x="540" y="156" text-anchor="middle" font-size="13" fill="#5F5E5A">Descriptive metadata only</text>
+<text x="540" y="176" text-anchor="middle" font-size="13" fill="#444441">Account Intelligence — Available</text>
+<text x="540" y="194" text-anchor="middle" font-size="13" fill="#5F5E5A">Customer Recommendation — Planned</text>
+<text x="540" y="212" text-anchor="middle" font-size="13" fill="#5F5E5A">Executive Customer Briefing — Planned</text>
+
+<line x1="540" y1="236" x2="540" y2="294" stroke="#888780" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect x="410" y="250" width="260" height="30" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+<text x="540" y="270" text-anchor="middle" font-size="13" fill="#444441">Informational only — no dynamic dispatch</text>
+
+<rect x="70" y="298" width="940" height="170" rx="10" fill="none" stroke="#7FB0E6" stroke-width="1.2"/>
+<text x="90" y="320" font-size="16" font-weight="700" fill="#0C2D4E">Salesforce Interaction</text>
+
+<rect x="90" y="348" width="190" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="185" y="402" text-anchor="middle" font-size="16" font-weight="600" fill="#042C53">Account Record Page</text>
+
+<line x1="280" y1="398" x2="328" y2="398" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="330" y="348" width="280" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="470" y="376" text-anchor="middle" font-size="16" font-weight="700" fill="#042C53">SBC Account Intelligence LWC</text>
+<text x="470" y="398" text-anchor="middle" font-size="13" fill="#444441">Capability Catalog · Trusted CRM Context</text>
+<text x="470" y="416" text-anchor="middle" font-size="13" fill="#444441">Generate Intelligence · Evidence Inspection</text>
+
+<line x1="610" y1="398" x2="658" y2="398" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="660" y="348" width="280" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="800" y="376" text-anchor="middle" font-size="16" font-weight="700" fill="#042C53">Apex Controller</text>
+<text x="800" y="398" text-anchor="middle" font-size="13" fill="#444441">with sharing · thin orchestration</text>
+<text x="800" y="416" text-anchor="middle" font-size="13" fill="#444441">no business logic · no DML</text>
+
+<line x1="800" y1="448" x2="800" y2="483" stroke="#42413D" stroke-width="1.6"/>
+<line x1="800" y1="483" x2="425" y2="483" stroke="#42413D" stroke-width="1.6"/>
+<line x1="425" y1="483" x2="425" y2="546" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="70" y="498" width="940" height="170" rx="10" fill="none" stroke="#7FB0E6" stroke-width="1.2"/>
+<text x="90" y="520" font-size="16" font-weight="700" fill="#0C2D4E">Grounded Request Path</text>
+
+<rect x="90" y="548" width="200" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="190" y="588" text-anchor="middle" font-size="15" font-weight="600" fill="#042C53">Salesforce CRM Data</text>
+<text x="190" y="610" text-anchor="middle" font-size="12.5" fill="#444441">Account · Opportunity · Case</text>
+<text x="190" y="626" text-anchor="middle" font-size="12.5" fill="#444441">Contact · Task</text>
+
+<line x1="290" y1="598" x2="318" y2="598" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="320" y="548" width="210" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="425" y="586" text-anchor="middle" font-size="15" font-weight="700" fill="#042C53">Context Service</text>
+<text x="425" y="608" text-anchor="middle" font-size="12.5" fill="#444441">WITH USER_MODE queries</text>
+<text x="425" y="626" text-anchor="middle" font-size="12.5" fill="#444441">Deterministic evidence IDs</text>
+
+<line x1="530" y1="598" x2="558" y2="598" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="560" y="548" width="210" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="665" y="586" text-anchor="middle" font-size="15" font-weight="700" fill="#042C53">Intelligence Service</text>
+<text x="665" y="608" text-anchor="middle" font-size="12.5" fill="#444441">GPT-5.6 instructions</text>
+<text x="665" y="626" text-anchor="middle" font-size="12.5" fill="#444441">Strict JSON schema</text>
+
+<line x1="770" y1="598" x2="798" y2="598" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="800" y="548" width="190" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="895" y="586" text-anchor="middle" font-size="15" font-weight="700" fill="#042C53">OpenAI Client</text>
+<text x="895" y="608" text-anchor="middle" font-size="12.5" fill="#444441">Named Credential</text>
+<text x="895" y="626" text-anchor="middle" font-size="12.5" fill="#444441">120-second timeout</text>
+
+<rect x="1060" y="518" width="280" height="180" rx="12" fill="#FFFFFF" stroke="#0F6E56" stroke-width="2"/>
+<text x="1200" y="546" text-anchor="middle" font-size="17" font-weight="700" fill="#04342C">OpenAI</text>
+<text x="1200" y="564" text-anchor="middle" font-size="13" fill="#0F6E56">External reasoning boundary</text>
+
+<rect x="1088" y="578" width="224" height="108" rx="8" fill="#FFFFFF" stroke="#0F6E56" stroke-width="1.4"/>
+<text x="1200" y="600" text-anchor="middle" font-size="15" font-weight="700" fill="#04342C">Responses API — GPT-5.6</text>
+<text x="1200" y="620" text-anchor="middle" font-size="13" fill="#085041">Reasoning only · Structured output</text>
+<text x="1200" y="638" text-anchor="middle" font-size="13" fill="#085041">Low reasoning effort · Low verbosity</text>
+<text x="1200" y="656" text-anchor="middle" font-size="13" fill="#085041">Requested alias: gpt-5.6</text>
+
+<line x1="990" y1="596" x2="1086" y2="596" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="1020" y="568" text-anchor="middle" font-size="12" font-weight="600" fill="#2C2C2A">Sanitized evidence</text>
+<text x="1020" y="582" text-anchor="middle" font-size="12" font-weight="600" fill="#2C2C2A">+ strict schema</text>
+
+<line x1="1086" y1="640" x2="990" y2="640" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="1020" y="654" text-anchor="middle" font-size="12" font-weight="600" fill="#2C2C2A">Strict structured</text>
+<text x="1020" y="668" text-anchor="middle" font-size="12" font-weight="600" fill="#2C2C2A">JSON</text>
+
+<line x1="895" y1="648" x2="895" y2="735" stroke="#42413D" stroke-width="1.6"/>
+<line x1="895" y1="735" x2="200" y2="735" stroke="#42413D" stroke-width="1.6"/>
+<line x1="200" y1="735" x2="200" y2="746" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="70" y="700" width="940" height="170" rx="10" fill="none" stroke="#7FB0E6" stroke-width="1.2"/>
+<text x="90" y="722" font-size="16" font-weight="700" fill="#0C2D4E">Validated Return Path</text>
+
+<rect x="90" y="750" width="220" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="200" y="788" text-anchor="middle" font-size="15" font-weight="700" fill="#042C53">Evidence Validation</text>
+<text x="200" y="810" text-anchor="middle" font-size="12.5" fill="#444441">Rejects unknown</text>
+<text x="200" y="826" text-anchor="middle" font-size="12.5" fill="#444441">evidence IDs</text>
+
+<line x1="310" y1="798" x2="338" y2="798" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="340" y="750" width="220" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="450" y="788" text-anchor="middle" font-size="15" font-weight="700" fill="#042C53">Presentation Layer</text>
+<text x="450" y="810" text-anchor="middle" font-size="12.5" fill="#444441">Sanitized DTO</text>
+<text x="450" y="826" text-anchor="middle" font-size="12.5" fill="#444441">Allow-listed evidence</text>
+
+<line x1="560" y1="798" x2="588" y2="798" stroke="#42413D" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+<rect x="590" y="750" width="280" height="100" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.4"/>
+<text x="730" y="788" text-anchor="middle" font-size="15" font-weight="700" fill="#042C53">LWC Result Rendering</text>
+<text x="730" y="810" text-anchor="middle" font-size="12.5" fill="#444441">Evidence inspection</text>
+<text x="730" y="826" text-anchor="middle" font-size="12.5" fill="#444441">Salesforce record navigation</text>
+
+<rect x="90" y="892" width="440" height="66" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.4"/>
+<text x="310" y="916" text-anchor="middle" font-size="14.5" font-weight="600" fill="#412402">Salesforce is the system of record.</text>
+<text x="310" y="936" text-anchor="middle" font-size="14.5" font-weight="600" fill="#412402">GPT-5.6 performs reasoning only.</text>
+
+<rect x="550" y="892" width="440" height="66" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.4"/>
+<text x="770" y="916" text-anchor="middle" font-size="14.5" font-weight="600" fill="#412402">Account Intelligence generation</text>
+<text x="770" y="936" text-anchor="middle" font-size="14.5" font-weight="600" fill="#412402">performs zero Salesforce DML.</text>
+
+</svg>
