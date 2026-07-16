@@ -15,7 +15,7 @@ SBC is a Salesforce-native platform for delivering reusable, evidence-backed AI 
 
 Customer-facing teams often need to interpret opportunities, cases, tasks, contacts, and account details before deciding what deserves attention. The relevant facts exist in Salesforce, but assembling them into a concise account view is time-consuming and inconsistent.
 
-SBC addresses this problem through business capabilities that collect a bounded set of permitted CRM facts, ask an OpenAI model to reason only over those facts, and return a validated result to Salesforce. Grounding matters because an unsupported recommendation is not actionable. Each non-summary conclusion therefore cites evidence identifiers that resolve to sanitized Salesforce records.
+SBC addresses this problem through business capabilities that collect a bounded set of permitted CRM facts, invoke GPT-5.6 to reason only over those facts, and return a validated result to Salesforce. Grounding matters because an unsupported recommendation is not actionable. Each non-summary conclusion therefore cites evidence identifiers that resolve to sanitized Salesforce records.
 
 Salesforce remains authoritative throughout the flow. The current Account Intelligence capability performs no CRM writes and does not treat model output as source data.
 
@@ -130,10 +130,12 @@ The implementation applies several controls around model output:
 | User interface                | Lightning Web Components and SLDS                   |
 | AI model                      | GPT-5.6                                             |
 | AI integration                | OpenAI Responses API                                |
-| Response contract             | Strict Structured Outputs with JSON Schema          |
+| Response contract             | OpenAI Structured Outputs with strict JSON Schema   |
 | Authentication                | Salesforce Named Credential and External Credential |
 | Capability configuration      | Salesforce Custom Metadata Type                     |
+| Server-side testing           | Apex test framework and `HttpCalloutMock`           |
 | Frontend testing              | Salesforce LWC Jest                                 |
+| Code quality                  | ESLint and Prettier                                 |
 | Source and deployment tooling | Salesforce CLI                                      |
 
 ## Project Structure
@@ -276,21 +278,25 @@ Loading state displayed while Salesforce validates the grounded CRM context, inv
 
 ![Generated Account Intelligence](docs/images/account-intelligence-generated.png)
 
-Generated Account Intelligence showing the executive summary, health score, grounded business insights, recommended actions, and evidence-backed recommendations produced from trusted Salesforce CRM context.
+Generated Account Intelligence showing the executive summary, health score, grounded business insights, and evidence-backed recommended actions produced from trusted Salesforce CRM context.
 
 ### Evidence Expansion
 
 ![Evidence Expansion](docs/images/account-intelligence-evidence.png)
 
-Expanded evidence references showing the underlying Salesforce Opportunity and Case records that support the generated analysis. Every AI conclusion is backed by trusted CRM evidence and can be inspected directly from the Lightning experience.
+Expanded evidence references showing the underlying Salesforce Opportunity and Case records that support the generated analysis. Every evidence-bearing conclusion is backed by trusted CRM evidence and can be inspected directly from the Lightning experience.
+
+## How Codex was used
+
+Codex assisted with architecture exploration, Apex and Lightning Web Component implementation, refactoring, testing, documentation, code review, and technical validation. Every proposed change was manually reviewed, tested, and integrated before becoming part of the project; Codex supported the engineering workflow without replacing human ownership or approval.
 
 ## Design Principles
 
 - Salesforce is always the system of record.
 - AI performs reasoning, not data ownership.
-- Every conclusion is evidence-backed.
+- Every non-summary conclusion is evidence-backed.
 - Intelligence generation is read-only and validated.
 
 ## License
 
-License to be determined.
+This repository is provided for demonstration purposes as part of the OpenAI Build Week submission.
